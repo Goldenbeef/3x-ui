@@ -1,8 +1,9 @@
 {{define "inboundModal"}}
-<a-modal id="inbound-modal" v-model="inModal.visible" :title="inModal.title" @ok="inModal.ok"
-         :confirm-loading="inModal.confirmLoading" :closable="true" :mask-closable="false"
-         :class="themeSwitcher.currentTheme"
-         :ok-text="inModal.okText" cancel-text='{{ i18n "close" }}'>
+<a-modal id="inbound-modal" v-model="inModal.visible" :title="inModal.title"
+        :dialog-style="{ top: '20px' }" @ok="inModal.ok"
+        :confirm-loading="inModal.confirmLoading" :closable="true" :mask-closable="false"
+        :class="themeSwitcher.currentTheme"
+        :ok-text="inModal.okText" cancel-text='{{ i18n "close" }}'>
     {{template "form/inbound"}}
 </a-modal>
 <script>
@@ -101,11 +102,6 @@
                         client.flow = "";
                     });
                 }
-                if ((this.inModal.inbound.protocol == Protocols.VLESS || this.inModal.inbound.protocol == Protocols.TROJAN) && !inModal.inbound.xtls) {
-                    this.inModal.inbound.settings.vlesses.forEach(client => {
-                        client.flow = "";
-                    });
-                }
             },
             SSMethodChange() {
                 if (this.inModal.inbound.isSSMultiUser) {
@@ -130,10 +126,6 @@
             setDefaultCertData(index) {
                 inModal.inbound.stream.tls.certs[index].certFile = app.defaultCert;
                 inModal.inbound.stream.tls.certs[index].keyFile = app.defaultKey;
-            },
-            setDefaultCertXtls(index) {
-                inModal.inbound.stream.xtls.certs[index].certFile = app.defaultCert;
-                inModal.inbound.stream.xtls.certs[index].keyFile = app.defaultKey;
             },
             async getNewX25519Cert() {
                 inModal.loading(true);
